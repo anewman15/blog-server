@@ -36,12 +36,15 @@ class App < Roda
           post.set_fields(params[:post], ["title", "body"])
 
           if post.save
-            { post: post.values }
+            r.halt(201, { post: post.values })
           else
-            {
-              post: post.values,
-              errors: post.errors,
-            }
+            r.halt(
+              422,
+              {
+                post: post.values,
+                errors: post.errors,
+              }
+            )
           end
         end
       end
@@ -77,12 +80,18 @@ class App < Roda
               comment.set_fields(params[:comment], ["name", "body"])
 
               if comment.save
-                { comment: comment.values }
+                r.halt(
+                  201,
+                  { comment: comment.values }
+                )
               else
-                {
-                  comment: comment.values,
-                  errors: comment.errors
-                }
+                r.halt(
+                  422,
+                  {
+                    comment: comment.values,
+                    errors: comment.errors
+                  }
+                )
               end
             end
           end
